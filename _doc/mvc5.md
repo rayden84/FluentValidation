@@ -2,9 +2,12 @@
 title: ASP.NET MVC 5 Integration
 excerpt: Integration with ASP.NET MVC 5
 date: 2019-3-22
-icon: 
+icon:
   name: icon_globe
 color: green
+layout: redirect
+redirect_url: https://docs.fluentvalidation.net/mvc5.html
+
 sections:
   - /mvc5/getting-started
   - /mvc5/known-limitations

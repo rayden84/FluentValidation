@@ -7,6 +7,8 @@ icon:
   name: fa-graduation-cap
   # name: icon_genius
 color: primary
+layout: redirect
+redirect_url: https://docs.fluentvalidation.net/testing.html
 sections:
   - /testing/index
 ---

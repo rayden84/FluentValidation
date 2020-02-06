@@ -1,5 +1,8 @@
 ---
 title: Upgrading to FluentValidation 8
+layout: redirect
+redirect_url: https://docs.fluentvalidation.net/upgrading-to-8.html
+
 ---
 
 FluentValidation 8.0 is a major release that included several breaking changes. Please review this document before upgrading from FluentValidation 7.x to 8.

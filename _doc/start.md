@@ -6,6 +6,8 @@ icon:
   type: fa
   name: fa-paper-plane
 color: green
+layout: redirect
+redirect_url: https://docs.fluentvalidation.net/start.html
 sections:
   - /start/installation
   - /start/creating-your-first-validator
