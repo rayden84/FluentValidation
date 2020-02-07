@@ -6,7 +6,7 @@ icon:
   name: icon_globe
 color: green
 layout: redirect
-redirect_url: https://docs.fluentvalidation.net/mvc5.html
+redirect_url: https://docs.fluentvalidation.net/en/latest/mvc5.html
 
 sections:
   - /mvc5/getting-started

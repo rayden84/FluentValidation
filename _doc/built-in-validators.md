@@ -6,7 +6,7 @@ icon:
   name: icon_puzzle_alt
 color: orange
 layout: redirect
-redirect_url: https://docs.fluentvalidation.net/built-in-validators.html
+redirect_url: https://docs.fluentvalidation.net/en/latest/built-in-validators.html
 sections:
   - /validators/built-in-validators
 ---

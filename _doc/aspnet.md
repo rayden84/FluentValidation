@@ -6,7 +6,7 @@ icon:
   name: icon_globe
 color: green
 layout: redirect
-redirect_url: https://docs.fluentvalidation.net/aspnet.html
+redirect_url: https://docs.fluentvalidation.net/en/latest/aspnet.html
 sections:
   - /aspnet/aspnet
   - /aspnet/core

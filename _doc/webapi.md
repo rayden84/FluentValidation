@@ -6,7 +6,7 @@ icon:
   name: icon_globe
 color: green
 layout: redirect
-redirect_url: https://docs.fluentvalidation.net/webapi.html
+redirect_url: https://docs.fluentvalidation.net/en/latest/webapi.html
 sections:
   - /webapi/getting-started
   - /webapi/manual-validation

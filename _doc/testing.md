@@ -8,7 +8,7 @@ icon:
   # name: icon_genius
 color: primary
 layout: redirect
-redirect_url: https://docs.fluentvalidation.net/testing.html
+redirect_url: https://docs.fluentvalidation.net/en/latest/testing.html
 sections:
   - /testing/index
 ---

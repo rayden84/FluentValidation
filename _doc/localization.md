@@ -6,7 +6,7 @@ icon:
   name: icon_document_alt
 color: pink
 layout: redirect
-redirect_url: https://docs.fluentvalidation.net/localization.html
+redirect_url: https://docs.fluentvalidation.net/en/latest/localization.html
 sections:
   - /localization/index
 ---

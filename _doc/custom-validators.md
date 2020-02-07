@@ -6,7 +6,7 @@ icon:
   name: icon_tools
 color: blue
 layout: redirect
-redirect_url: https://docs.fluentvalidation.net/custom-validators.html
+redirect_url: https://docs.fluentvalidation.net/en/latest/custom-validators.html
 sections:
   - /validators/custom-validators
 ---

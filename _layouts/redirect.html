@@ -2,9 +2,7 @@
 <meta charset="utf-8">
 <title>Redirecting to {{ page.redirect_url }}</title>
 <script>
-  var url = "{{ page.redirect_url }}";
-  if (window.location.hash) { url += window.location.hash; }
-  window.location = url;
+  window.location = "{{ page.redirect_url }}" + window.location.hash;
 </script>
 <meta http-equiv="refresh" content="0; URL={{ page.redirect_url }}">
 <link rel="canonical" href="{{ page.redirect_url }}">

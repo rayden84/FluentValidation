@@ -1,7 +1,7 @@
 ---
 title: Upgrading to FluentValidation 8
 layout: redirect
-redirect_url: https://docs.fluentvalidation.net/upgrading-to-8.html
+redirect_url: https://docs.fluentvalidation.net/en/latest/upgrading-to-8.html
 
 ---
 
