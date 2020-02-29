@@ -31,7 +31,7 @@ namespace FluentValidation {
 	/// Base class for object validators.
 	/// </summary>
 	/// <typeparam name="T">The type of the object being validated</typeparam>
-	public abstract class AbstractValidator<T> : IValidator<T>, IEnumerable<IValidationRule> {
+	public abstract class AbstractValidator<T> : IValidator<T>, IValidator, IEnumerable<IValidationRule> {
 		internal TrackingCollection<IValidationRule> Rules { get; } = new TrackingCollection<IValidationRule>();
 		private Func<CascadeMode> _cascadeMode = () => ValidatorOptions.CascadeMode;
 
@@ -51,14 +51,6 @@ namespace FluentValidation {
 		Task<ValidationResult> IValidator<T>.ValidateAsync(IValidationContext<T> context, CancellationToken cancellation) {
 			if (context == null) throw new ArgumentNullException(nameof(context));
 			return ValidateAsync(ValidationContext<T>.GetFromInterface(context), cancellation);
-		}
-
-		ValidationResult IValidator.Validate(object instance) {
-			return ((IValidator) this).Validate(new ValidationContext(instance));
-		}
-
-		Task<ValidationResult> IValidator.ValidateAsync(object instance, CancellationToken cancellation) {
-			return ((IValidator)this).ValidateAsync(new ValidationContext(instance), cancellation);
 		}
 
 		ValidationResult IValidator.Validate(ValidationContext context) {
