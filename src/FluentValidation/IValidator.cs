@@ -49,6 +49,22 @@ namespace FluentValidation {
 		/// Sets the cascade mode for all rules within this validator.
 		/// </summary>
 		CascadeMode CascadeMode { get; set; }
+
+		/// <summary>
+		/// Validates the specified instance.
+		/// </summary>
+		/// <param name="context">A ValidationContext</param>
+		/// <returns>A ValidationResult object contains any validation failures.</returns>
+		ValidationResult Validate(IValidationContext<T> context);
+
+		/// <summary>
+		/// Validates the specified instance asynchronously.
+		/// </summary>
+		/// <param name="context">A ValidationContext</param>
+		/// <param name="cancellation">Cancellation token</param>
+		/// <returns>A ValidationResult object contains any validation failures.</returns>
+		Task<ValidationResult> ValidateAsync(IValidationContext<T> context, CancellationToken cancellation = new CancellationToken());
+
 	}
 
 	/// <summary>

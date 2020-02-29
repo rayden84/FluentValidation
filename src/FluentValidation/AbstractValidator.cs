@@ -43,6 +43,16 @@ namespace FluentValidation {
 			set => _cascadeMode = () => value;
 		}
 
+		ValidationResult IValidator<T>.Validate(IValidationContext<T> context) {
+			if (context == null) throw new ArgumentNullException(nameof(context));
+			return Validate(ValidationContext<T>.GetFromInterface(context));
+		}
+
+		Task<ValidationResult> IValidator<T>.ValidateAsync(IValidationContext<T> context, CancellationToken cancellation) {
+			if (context == null) throw new ArgumentNullException(nameof(context));
+			return ValidateAsync(ValidationContext<T>.GetFromInterface(context), cancellation);
+		}
+
 		ValidationResult IValidator.Validate(object instance) {
 			return ((IValidator) this).Validate(new ValidationContext(instance));
 		}

@@ -41,11 +41,43 @@ namespace FluentValidation {
 		IValidationContext ParentContext { get; }
 	}
 
+	public interface IValidationContext<out T> {
+		/// <summary>
+		/// The object to validate
+		/// </summary>
+		T InstanceToValidate { get; }
+
+		/// <summary>
+		/// Additional data associated with the validation request.
+		/// </summary>
+		IDictionary<string, object> RootContextData { get; }
+
+		/// <summary>
+		/// Property chain
+		/// </summary>
+		PropertyChain PropertyChain { get; }
+
+		/// <summary>
+		/// Selector
+		/// </summary>
+		IValidatorSelector Selector { get; }
+
+		/// <summary>
+		/// Whether this is a child context
+		/// </summary>
+		bool IsChildContext { get; }
+
+		/// <summary>
+		/// Whether this is a child collection context.
+		/// </summary>
+		bool IsChildCollectionContext { get; }
+	}
+
 	/// <summary>
 	/// Validation context
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class ValidationContext<T> : ValidationContext {
+	public class ValidationContext<T> : ValidationContext, IValidationContext<T> {
 		/// <summary>
 		/// Creates a new validation context
 		/// </summary>
@@ -100,6 +132,36 @@ namespace FluentValidation {
 			}
 
 			throw new InvalidOperationException($"Cannot validate instances of type '{context.InstanceToValidate.GetType().Name}'. This validator can only validate instances of type '{typeof(T).Name}'.");
+		}
+
+		internal static ValidationContext<T> GetFromInterface(IValidationContext<T> context) {
+			if (context == null) throw new ArgumentNullException(nameof(context));
+
+			// Ideally, AbstractValidator overloads should take an IValidationContext<T> instead
+			// of a ValidationContext<T>, but this is a breaking change for anyone
+			// who overloads Validate and I don't think it's worth forcing that breaking change
+			// on people. Instead, this method will convert the interface back to a concrete type
+			// or create a new ValidationContext<T>, which allows us to preserve the existing
+			// method signatures.
+
+			// Already of the correct type.
+			if (context is ValidationContext<T> c) {
+				return c;
+			}
+
+			IValidationContext parent = null;
+
+			// Check if it has a parent, if so preserve it.
+			if (context is IValidationContext c2) {
+				parent = c2.ParentContext;
+			}
+
+			return new ValidationContext<T>(context.InstanceToValidate, context.PropertyChain, context.Selector) {
+				IsChildContext = context.IsChildContext,
+				IsChildCollectionContext = context.IsChildCollectionContext,
+				RootContextData = context.RootContextData,
+				_parentContext = parent
+			};
 		}
 	}
 
@@ -217,9 +279,10 @@ namespace FluentValidation {
 		/// <returns></returns>
 		internal ValidationContext<T> ToGeneric<T>() {
 			return new ValidationContext<T>((T)InstanceToValidate, PropertyChain, Selector) {
-				IsChildContext = IsChildContext,
-				RootContextData = RootContextData,
-				_parentContext = _parentContext
+				IsChildContext = this.IsChildContext,
+				IsChildCollectionContext = this.IsChildCollectionContext,
+				RootContextData = this.RootContextData,
+				_parentContext = this._parentContext
 			};
 		}
 
