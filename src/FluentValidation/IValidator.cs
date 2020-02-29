@@ -29,7 +29,7 @@ namespace FluentValidation {
 	/// Defines a validator for a particular type.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public interface IValidator<in T> : IValidator {
+	public interface IValidator<in T> {
 		/// <summary>
 		/// Validates the specified instance.
 		/// </summary>
@@ -65,6 +65,11 @@ namespace FluentValidation {
 		/// <returns>A ValidationResult object contains any validation failures.</returns>
 		Task<ValidationResult> ValidateAsync(IValidationContext<T> context, CancellationToken cancellation = new CancellationToken());
 
+		/// <summary>
+		/// Creates a hook to access various meta data properties
+		/// </summary>
+		/// <returns>A IValidatorDescriptor object which contains methods to access metadata</returns>
+		IValidatorDescriptor CreateDescriptor();
 	}
 
 	/// <summary>

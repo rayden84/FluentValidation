@@ -17,9 +17,9 @@ namespace FluentValidation.Validators {
 		Type ValidatorType { get; }
 	}
 
-	public class ChildValidatorAdaptor : NoopPropertyValidator, IChildValidatorAdaptor {
-		private readonly Func<IValidationContext, IValidator> _validatorProvider;
-		private readonly IValidator _validator;
+	public class ChildValidatorAdaptor<T> : NoopPropertyValidator, IChildValidatorAdaptor {
+		private readonly Func<IValidationContext, IValidator<T>> _validatorProvider;
+		private readonly IValidator<T> _validator;
 
 		public Type ValidatorType { get; }
 
@@ -27,12 +27,12 @@ namespace FluentValidation.Validators {
 
 		internal bool PassThroughParentContext { get; set; }
 
-		public ChildValidatorAdaptor(IValidator validator, Type validatorType) {
+		public ChildValidatorAdaptor(IValidator<T> validator, Type validatorType) {
 			_validator = validator;
 			ValidatorType = validatorType;
 		}
 
-		public ChildValidatorAdaptor(Func<IValidationContext, IValidator> validatorProvider, Type validatorType) {
+		public ChildValidatorAdaptor(Func<IValidationContext, IValidator<T>> validatorProvider, Type validatorType) {
 			_validatorProvider = validatorProvider;
 			ValidatorType = validatorType;
 		}
@@ -52,7 +52,7 @@ namespace FluentValidation.Validators {
 				return Enumerable.Empty<ValidationFailure>();
 			}
 
-			var newContext = CreateNewValidationContextForChildValidator(context.PropertyValue, context);
+			var newContext = CreateNewValidationContextForChildValidator((T)context.PropertyValue, context);
 
 			// If we're inside a collection with RuleForEach, then preserve the CollectionIndex placeholder
 			// and pass it down to child validator by caching it in the RootContextData which flows through to
@@ -86,7 +86,7 @@ namespace FluentValidation.Validators {
 				return Enumerable.Empty<ValidationFailure>();
 			}
 
-			var newContext = CreateNewValidationContextForChildValidator(context.PropertyValue, context);
+			var newContext = CreateNewValidationContextForChildValidator((T)context.PropertyValue, context);
 
 			// If we're inside a collection with RuleForEach, then preserve the CollectionIndex placeholder
 			// and pass it down to child validator by caching it in the RootContextData which flows through to
@@ -100,13 +100,13 @@ namespace FluentValidation.Validators {
 			return result.Errors;
 		}
 
-		public virtual IValidator GetValidator(PropertyValidatorContext context) {
+		public virtual IValidator<T> GetValidator(PropertyValidatorContext context) {
 			context.Guard("Cannot pass a null context to GetValidator", nameof(context));
 
 			return _validatorProvider != null ? _validatorProvider(context) : _validator;
 		}
 
-		protected ValidationContext CreateNewValidationContextForChildValidator(object instanceToValidate, PropertyValidatorContext context) {
+		protected ValidationContext<T> CreateNewValidationContextForChildValidator(T instanceToValidate, PropertyValidatorContext context) {
 			var selector = RuleSets?.Length > 0 ? new RulesetValidatorSelector(RuleSets) : null;
 			var newContext = context.ParentContext.CloneForChildValidator(instanceToValidate, PassThroughParentContext, selector);
 

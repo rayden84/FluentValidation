@@ -248,8 +248,8 @@ namespace FluentValidation {
 		/// <param name="preserveParentContext"></param>
 		/// <param name="selector"></param>
 		/// <returns></returns>
-		public ValidationContext CloneForChildValidator(object instanceToValidate, bool preserveParentContext = false, IValidatorSelector selector = null) {
-			return new ValidationContext(instanceToValidate, PropertyChain, selector ?? Selector) {
+		public ValidationContext<T> CloneForChildValidator<T>(T instanceToValidate, bool preserveParentContext = false, IValidatorSelector selector = null) {
+			return new ValidationContext<T>(instanceToValidate, PropertyChain, selector ?? Selector) {
 				IsChildContext = true,
 				RootContextData = RootContextData,
 				_parentContext = preserveParentContext ? this : null
@@ -262,8 +262,8 @@ namespace FluentValidation {
 		/// <param name="instanceToValidate"></param>
 		/// <param name="preserveParentContext"></param>
 		/// <returns></returns>
-		public ValidationContext CloneForChildCollectionValidator(object instanceToValidate, bool preserveParentContext = false) {
-			return new ValidationContext(instanceToValidate, null, Selector) {
+		public ValidationContext<T> CloneForChildCollectionValidator<T>(T instanceToValidate, bool preserveParentContext = false) {
+			return new ValidationContext<T>(instanceToValidate, null, Selector) {
 				IsChildContext = true,
 				IsChildCollectionContext = true,
 				RootContextData = RootContextData,

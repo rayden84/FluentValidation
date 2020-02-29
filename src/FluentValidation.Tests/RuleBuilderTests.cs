@@ -224,7 +224,7 @@ namespace FluentValidation.Tests {
 			var builder = new RuleBuilder<Person, Address>(PropertyRule.Create<Person, Address>(x => x.Address),null);
 			builder.SetValidator((Person person) => new NoopAddressValidator());
 
-			builder.Rule.Validators.OfType<ChildValidatorAdaptor>().Single().ValidatorType.ShouldEqual(typeof(NoopAddressValidator));
+			builder.Rule.Validators.OfType<IChildValidatorAdaptor>().Single().ValidatorType.ShouldEqual(typeof(NoopAddressValidator));
 		}
 
 		class NoopAddressValidator : AbstractValidator<Address> {

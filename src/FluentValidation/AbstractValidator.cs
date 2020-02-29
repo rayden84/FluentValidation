@@ -263,7 +263,7 @@ namespace FluentValidation {
 		/// </summary>
 		public void Include(IValidator<T> rulesToInclude) {
 			rulesToInclude.Guard("Cannot pass null to Include", nameof(rulesToInclude));
-			var rule = IncludeRule.Create<T>(rulesToInclude, () => CascadeMode);
+			var rule = IncludeRule<T>.Create(rulesToInclude, () => CascadeMode);
 			AddRule(rule);
 		}
 
@@ -272,7 +272,7 @@ namespace FluentValidation {
 		/// </summary>
 		public void Include<TValidator>(Func<T, TValidator> rulesToInclude) where TValidator : IValidator<T> {
 			rulesToInclude.Guard("Cannot pass null to Include", nameof(rulesToInclude));
-			var rule = IncludeRule.Create(rulesToInclude, () => CascadeMode);
+			var rule = IncludeRule<T>.Create(rulesToInclude, () => CascadeMode);
 			AddRule(rule);
 		}
 

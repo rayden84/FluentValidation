@@ -95,7 +95,7 @@ namespace FluentValidation {
 		/// <typeparam name="TProperty"></typeparam>
 		/// <returns></returns>
 		public static IRuleBuilderOptions<T, TProperty> InjectValidator<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<IServiceProvider, ValidationContext<T>, IValidator<TProperty>> callback, params string[] ruleSets) {
-			var adaptor = new ChildValidatorAdaptor(context => {
+			var adaptor = new ChildValidatorAdaptor<TProperty>(context => {
 				var actualContext = (PropertyValidatorContext) context;
 				var serviceProvider = actualContext.ParentContext.GetServiceProvider();
 				var contextToUse = ValidationContext<T>.GetFromNonGenericContext(actualContext.ParentContext);

@@ -32,7 +32,7 @@ namespace FluentValidation.Internal {
 		/// <returns>Whether or not the validator can execute.</returns>
 		public virtual bool CanExecute(IValidationRule rule, string propertyPath, ValidationContext context) {
 			var executed = context.RootContextData.GetOrAdd("_FV_RuleSetsExecuted", () => new HashSet<string>());
-			
+
 			if (rule.RuleSets.Length == 0 && _rulesetsToExecute.Length > 0) {
 				if (IsIncludeRule(rule)) {
 					return true;
@@ -78,7 +78,7 @@ namespace FluentValidation.Internal {
 		/// <param name="rule"></param>
 		/// <returns></returns>
 		protected bool IsIncludeRule(IValidationRule rule) {
-			return rule is IncludeRule;
+			return rule is IIncludeRule;
 		}
 	}
 }

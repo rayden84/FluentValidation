@@ -7,10 +7,14 @@ namespace FluentValidation.Internal {
 	using Results;
 	using Validators;
 
+	// Non-generic marker interface for checking if a rule is an Include rule.
+	// TODO: Decide if there's a better way to do this.
+	internal interface IIncludeRule { }
+
 	/// <summary>
 	/// Include rule
 	/// </summary>
-	public class IncludeRule : PropertyRule {
+	public class IncludeRule<T> : PropertyRule, IIncludeRule {
 		/// <summary>
 		/// Creates a new IncludeRule
 		/// </summary>
@@ -18,8 +22,8 @@ namespace FluentValidation.Internal {
 		/// <param name="cascadeModeThunk"></param>
 		/// <param name="typeToValidate"></param>
 		/// <param name="containerType"></param>
-		public IncludeRule(IValidator validator, Func<CascadeMode> cascadeModeThunk, Type typeToValidate, Type containerType) : base(null, x => x, null, cascadeModeThunk, typeToValidate, containerType) {
-			AddValidator(new ChildValidatorAdaptor(validator, validator.GetType()));
+		public IncludeRule(IValidator<T> validator, Func<CascadeMode> cascadeModeThunk, Type typeToValidate, Type containerType) : base(null, x => x, null, cascadeModeThunk, typeToValidate, containerType) {
+			AddValidator(new ChildValidatorAdaptor<T>(validator, validator.GetType()));
 		}
 
 		/// <summary>
@@ -30,10 +34,10 @@ namespace FluentValidation.Internal {
 		/// <param name="typeToValidate"></param>
 		/// <param name="containerType"></param>
 		/// <param name="validatorType"></param>
-		public IncludeRule(Func<IValidationContext, IValidator> func,  Func<CascadeMode> cascadeModeThunk, Type typeToValidate, Type containerType, Type validatorType) : base(null, x => x, null, cascadeModeThunk, typeToValidate, containerType) {
-			AddValidator(new ChildValidatorAdaptor(func,  validatorType));
+		public IncludeRule(Func<IValidationContext, IValidator<T>> func,  Func<CascadeMode> cascadeModeThunk, Type typeToValidate, Type containerType, Type validatorType) : base(null, x => x, null, cascadeModeThunk, typeToValidate, containerType) {
+			AddValidator(new ChildValidatorAdaptor<T>(func,  validatorType));
 		}
-		
+
 		/// <summary>
 		/// Creates a new include rule from an existing validator
 		/// </summary>
@@ -41,8 +45,8 @@ namespace FluentValidation.Internal {
 		/// <param name="cascadeModeThunk"></param>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public static IncludeRule Create<T>(IValidator validator, Func<CascadeMode> cascadeModeThunk) {
-			return new IncludeRule(validator, cascadeModeThunk, typeof(T), typeof(T));
+		public static IncludeRule<T> Create(IValidator<T> validator, Func<CascadeMode> cascadeModeThunk) {
+			return new IncludeRule<T>(validator, cascadeModeThunk, typeof(T), typeof(T));
 		}
 
 		/// <summary>
@@ -53,9 +57,9 @@ namespace FluentValidation.Internal {
 		/// <typeparam name="T"></typeparam>
 		/// <typeparam name="TValidator"></typeparam>
 		/// <returns></returns>
-		public static IncludeRule Create<T, TValidator>(Func<T, TValidator> func, Func<CascadeMode> cascadeModeThunk) 
+		public static IncludeRule<T> Create<TValidator>(Func<T, TValidator> func, Func<CascadeMode> cascadeModeThunk)
 			where TValidator : IValidator<T> {
-			return new IncludeRule(ctx => func((T)ctx.InstanceToValidate), cascadeModeThunk, typeof(T), typeof(T), typeof(TValidator));
+			return new IncludeRule<T>(ctx => func((T)ctx.InstanceToValidate), cascadeModeThunk, typeof(T), typeof(T), typeof(TValidator));
 		}
 
 

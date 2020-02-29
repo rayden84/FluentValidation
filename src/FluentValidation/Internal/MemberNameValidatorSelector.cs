@@ -56,7 +56,7 @@ namespace FluentValidation.Internal {
 			bool cascadeEnabled = !context.RootContextData.ContainsKey(DisableCascadeKey);
 
 			return (isChildContext && cascadeEnabled && !_memberNames.Any(x => x.Contains(".")))
-			       || rule is IncludeRule
+			       || rule is IIncludeRule
 			       || ( _memberNames.Any(x => x == propertyPath || propertyPath.StartsWith(x + ".") || x.StartsWith(propertyPath + ".")));
 		}
 
