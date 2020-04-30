@@ -108,7 +108,7 @@ namespace FluentValidation.Validators {
 				? context.Rule.MessageBuilder(messageBuilderContext)
 				: messageBuilderContext.GetDefaultMessage();
 
-			var failure = new ValidationFailure(context.PropertyName, error, context.PropertyValue);
+			var failure = new ValidationFailure(context.PropertyName, error, context.PropertyValue, this);
 			failure.FormattedMessageArguments = context.MessageFormatter.AdditionalArguments;
 			failure.FormattedMessagePlaceholderValues = context.MessageFormatter.PlaceholderValues;
 			failure.ErrorCode = (Options.ErrorCodeSource != null)

@@ -24,10 +24,18 @@ namespace FailedValidatorsTest {
       var rules = validator.OfType<PropertyRule>();
       var validators = rules.Select(r => r.CurrentValidator);
 
-      // poke around with the result
+      // use the "new" failedvalidator property and poke around with it
+
+      var failedValidators = singleValidationResult.Errors.Select(e => e.FailedValidator);
+      var passedValidators = validators.Except(failedValidators);
+
+      // this is essentially the line that I was looking for
+      // don't know if it works with more complicated/nested rules/rules set
+
+      var passedRules = rules.Where(r => passedValidators.Contains(r.CurrentValidator));
 
       if (singleValidationResult.IsValid) {
-
+        // do whatever is necessary
       }
     }
   }

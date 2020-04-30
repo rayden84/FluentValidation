@@ -17,7 +17,8 @@
 #endregion
 
 namespace FluentValidation.Results {
-	using System;
+  using FluentValidation.Validators;
+  using System;
 	using System.Collections.Generic;
 
 	/// <summary>
@@ -29,25 +30,43 @@ namespace FluentValidation.Results {
 
 		}
 
-		/// <summary>
-		/// Creates a new validation failure.
-		/// </summary>
-		public ValidationFailure(string propertyName, string errorMessage) : this(propertyName, errorMessage, null) {
+    /// <summary>
+    /// Creates a new validation failure.
+    /// </summary>
+    public ValidationFailure(string propertyName, string errorMessage) : this(propertyName, errorMessage, null) {
+    }
+
+    /// <summary>
+    /// Creates a new validation failure.
+    /// </summary>
+    public ValidationFailure(string propertyName, string errorMessage, object attemptedValue) : this(propertyName, errorMessage, attemptedValue, null) {
 		}
 
-		/// <summary>
-		/// Creates a new ValidationFailure.
-		/// </summary>
-		public ValidationFailure(string propertyName, string errorMessage, object attemptedValue) {
+    /// <summary>
+    /// Creates a new validation failure and keeps track of the failed validator
+    /// </summary>
+    public ValidationFailure(string propertyName, string errorMessage, PropertyValidator validator) : this(propertyName, errorMessage, null, validator) {
+    }
+
+    /// <summary>
+    /// Creates a new ValidationFailure.
+    /// </summary>
+    public ValidationFailure(string propertyName, string errorMessage, object attemptedValue, PropertyValidator validator) {
 			PropertyName = propertyName;
 			ErrorMessage = errorMessage;
 			AttemptedValue = attemptedValue;
+      FailedValidator = validator;
 		}
 
-		/// <summary>
-		/// The name of the property.
-		/// </summary>
-		public string PropertyName { get; set; }
+    /// <summary>
+    /// Holds the validator that has failed.
+    /// </summary>
+    public PropertyValidator FailedValidator { get; private set; }
+
+    /// <summary>
+    /// The name of the property.
+    /// </summary>
+    public string PropertyName { get; set; }
 
 		/// <summary>
 		/// The error message
